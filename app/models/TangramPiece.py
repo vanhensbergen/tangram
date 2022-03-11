@@ -1,6 +1,5 @@
-from cgitb import grey
 from math import *
-from tkinter import Y, Canvas
+from tkinter import Canvas
 class TangramPiece:
       __canvas = None
       __id = None
@@ -53,6 +52,7 @@ class TangramPiece:
             self.__dragStartX = None
             self.__dragStartY = None
             self.__dragStartCoords = None
+            
 
       """
       description of onDrag(self,event); it is a handler for draghandling 
@@ -105,9 +105,6 @@ class TangramPiece:
                         newcoords.append(-sinAngle*xrel + cosAngle*yrel +self.__Y)
             self.update(newcoords)
                   
-            
-            
-      
       """
       description of update(self,coords)
       :coords is a new full list consisting of all the x,y values of corners
