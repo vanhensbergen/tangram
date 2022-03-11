@@ -4,11 +4,11 @@ from tkinter import Canvas
 class TangramPiece:
       __canvas = None
       __id = None
-      __X = 0
-      __Y = 0
-      __dragStartX = None
-      __dragStartY = None
-      __dragStartCoords = None
+      _X = 0
+      _Y = 0
+      _dragStartX = None
+      _dragStartY = None
+      _dragStartCoords = None
       __resetCoords = None
       
       def __init__(self, canvas : Canvas, *coords,**options):
@@ -19,12 +19,12 @@ class TangramPiece:
         numberOfCorners = len(coords)/2
         for coord in coords:
             if count%2 ==  0:
-                  self.__X += coord
+                  self._X += coord
             else:
-                  self.__Y+= coord
+                  self._Y+= coord
             count +=1
-        self.__X = self.__X/numberOfCorners
-        self.__Y = self.__Y/numberOfCorners
+        self._X = self._X/numberOfCorners
+        self._Y = self._Y/numberOfCorners
         self.bind("<Motion>", self.onDrag);
         self.bind('<ButtonPress>', self.onDragStart )
         self.bind('<ButtonRelease>', self.onDragEnd)
@@ -32,7 +32,10 @@ class TangramPiece:
         #self.bind('<Leave>',lambda event: print("test"))
         
       def onDoubleClick(self,event):
-            self.rotate(45) 
+            coords = self.coords()
+            newcoords = self.rotate(45,*coords) 
+            self.update(newcoords)
+            
       """
       description of onDragStart(self,event)
       the method is a handler for ButtonPress
@@ -42,18 +45,18 @@ class TangramPiece:
       the method sets the mousepoition on dragstart and sets the cornercoordinates of the piece.
       """  
       def onDragStart(self , event):
-            self.__dragStartX = event.x
-            self.__dragStartY = event.y
-            self.__dragStartCoords = self.coords()
+            self._dragStartX = event.x
+            self._dragStartY = event.y
+            self._dragStartCoords = self.coords()
       
       """
       the description of onDragEnd(self, event)
       the method erases all memory of the startdrag details that were set previously
       """          
       def onDragEnd(self , event):
-            self.__dragStartX = None
-            self.__dragStartY = None
-            self.__dragStartCoords = None
+            self._dragStartX = None
+            self._dragStartY = None
+            self._dragStartCoords = None
             
 
       """
@@ -65,47 +68,48 @@ class TangramPiece:
       """  
       def onDrag(self,event):
             if self.dragStarted:
-                  deltaX = event.x - self.__dragStartX
-                  deltaY = event.y - self.__dragStartY
-                  numberOfCorners = len(self.__dragStartCoords)
-                  newCoords = self.__dragStartCoords.copy()
-                  self.__X =0
-                  self.__Y =0
+                  deltaX = event.x - self._dragStartX
+                  deltaY = event.y - self._dragStartY
+                  numberOfCorners = len(self._dragStartCoords)
+                  newCoords = self._dragStartCoords.copy()
+                  self._X =0
+                  self._Y =0
                   for i in range(0,numberOfCorners):
                         if i %2 == 0:
                               newCoords[i] += deltaX
-                              self.__X += newCoords[i]
+                              self._X += newCoords[i]
                         else:
                               newCoords[i] += deltaY
-                              self.__Y += newCoords[i]
+                              self._Y += newCoords[i]
                               
-                  self.__X = 2*self.__X /numberOfCorners
-                  self.__Y = 2*self.__Y /numberOfCorners
+                  self._X = 2*self._X /numberOfCorners
+                  self._Y = 2*self._Y /numberOfCorners
                   self.update(newCoords)
                   
                   
       """
-            description of rotate(self,angle)
+            description of rotate(self,angle,*coords)
             this method will rotate the tangrampiece over a given amount of degrees
             rotation direction is counterclockwise. Rotation is performed round X and Y 
             being the center of the Tangrampiece
             :angle in degrees
-            result a rotated tangrampiece in the given rotation direction
+            *coords the coordinates as a list of the polygone
+            returns the rotated coords of the polygone
       """         
-      def rotate(self,angle):
-            coords = self.coords()
+      def rotate(self,angle,*coords):
+            # coords = self.coords()
             newcoords = []
             cosAngle = cos(angle*pi/180)
             sinAngle = sin(angle*pi/180)
             
             for i in range(0,len(coords)):
                   if i%2 ==0:
-                        xrel = coords[i] - self.__X
+                        xrel = coords[i] - self._X
                   else:
-                        yrel = coords[i] - self.__Y
-                        newcoords.append( cosAngle*xrel + sinAngle*yrel + self.__X)
-                        newcoords.append(-sinAngle*xrel + cosAngle*yrel +self.__Y)
-            self.update(newcoords)
+                        yrel = coords[i] - self._Y
+                        newcoords.append( cosAngle*xrel + sinAngle*yrel + self._X)
+                        newcoords.append(-sinAngle*xrel + cosAngle*yrel +self._Y)
+            return newcoords
                   
       """
       description of update(self,coords)
@@ -137,7 +141,7 @@ class TangramPiece:
             
       @property
       def dragStarted(self):
-            return self.__dragStartX is not None  and self.__dragStartY is not None and self.__dragStartCoords is not None 
+            return self._dragStartX is not None  and self._dragStartY is not None and self._dragStartCoords is not None 
             
       
       @property 
