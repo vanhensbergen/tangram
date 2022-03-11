@@ -1,3 +1,4 @@
+from ast import Lambda
 from math import *
 from tkinter import Canvas
 class TangramPiece:
@@ -28,6 +29,7 @@ class TangramPiece:
         self.bind('<ButtonPress>', self.onDragStart )
         self.bind('<ButtonRelease>', self.onDragEnd)
         self.bind('<Double-Button>', self.onDoubleClick)
+        #self.bind('<Leave>',lambda event: print("test"))
         
       def onDoubleClick(self,event):
             self.rotate(45) 
