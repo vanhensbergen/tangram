@@ -1,4 +1,5 @@
 import tkinter as tk
+from app.models.FlippableTangramPiece import FlippableTangramPiece
 
 from app.models.TangramPiece import TangramPiece
 
@@ -15,7 +16,8 @@ class TangramCanvas(tk.Canvas):
         self.tangramPieces.append(TangramPiece(self, 150, 50, 200,0, 200,100,**options))
         self.tangramPieces.append(TangramPiece(self, 100, 100, 150,50, 200,100,150,150 ,**options))
         self.tangramPieces.append(TangramPiece(self, 50, 150, 100,100, 150,150,**options))
-        self.tangramPieces.append(TangramPiece(self, 0, 200, 50,150, 150,150,100,200,**options))
+        self.tangramPieces.append(FlippableTangramPiece(self,   0, 200, 50,150, 150,150,100,200,
+                                                                50, 200, 0,150, 100,150,150,200,**options))
         self.tangramPieces.append(TangramPiece(self, 100, 200, 200,100, 200,200,**options))
         
     def resetGame(self):
