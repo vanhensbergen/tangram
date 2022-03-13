@@ -19,7 +19,9 @@ class FlippableTangramPiece (TangramPiece):
         self.__resetFlippedCoords = self.__flippedCoords.copy()
         super().__init__(canvas, *polygoneCoords, **options)
         self.bind('<Control-Button-1>', self.onControlClick)
-        
+    """
+    when the polygone is flipped its coords  are swapped with these of the flipped version
+    """   
     def onControlClick(self,event):
         temp = self.coords()
         self.update(self.__flippedCoords)

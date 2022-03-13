@@ -23,7 +23,16 @@ class TangramCanvas(tk.Canvas):
     def resetGame(self):
         for tangramPiece in self.tangramPieces:
             tangramPiece.reset()
-        
+    
+    def changeTheme(self, backgroundColor):
+        self.configure(background=backgroundColor)
+        if backgroundColor=='white':
+            for tangramPiece in self.tangramPieces:
+                tangramPiece.configure(outline='black', activeoutline = 'red')
+        elif backgroundColor == 'red':
+            for tangramPiece in self.tangramPieces:
+                tangramPiece.configure(outline='white', activeoutline = 'black')
+            
           
         
 

@@ -160,7 +160,8 @@ class TangramPiece:
       def canvas (self):
             return self.__canvas
         
-            
+      def configure(self, **options):
+            self.canvas.itemconfigure(self.id, **options)
         
         
       
