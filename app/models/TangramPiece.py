@@ -54,8 +54,8 @@ class TangramPiece:
             self._dragStartX = None
             self._dragStartY = None
             self._dragStartCoords = None
-            self.unbind("<Motion")
-            self.unbind('<ButtonRelease')
+            self.unbind("<Motion>")
+            self.unbind("<ButtonRelease>")
             
 
       """
@@ -66,12 +66,13 @@ class TangramPiece:
       after that it updates the tangrampiece polygone on the canvas
       """  
       def onDrag(self,event):
-            if self.dragStarted:
+            if self.dragStarted:    #check dragStarted not neccesary! handler is coupled  in self.dragStart
                   deltaX = event.x - self._dragStartX
                   deltaY = event.y - self._dragStartY
                   newCoords = self.translate(deltaX, deltaY,self._dragStartCoords)
                   self.setCenter(newCoords)
                   self.update(newCoords)
+                  print('test')
                   
       def translate(self, deltaX, deltaY, coords):
             
