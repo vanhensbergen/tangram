@@ -66,16 +66,13 @@ class TangramPiece:
       after that it updates the tangrampiece polygone on the canvas
       """  
       def onDrag(self,event):
-            if self.dragStarted:    #check dragStarted not neccesary! handler is coupled  in self.dragStart
-                  deltaX = event.x - self._dragStartX
-                  deltaY = event.y - self._dragStartY
-                  newCoords = self.translate(deltaX, deltaY,self._dragStartCoords)
-                  self.setCenter(newCoords)
-                  self.update(newCoords)
-                  print('test')
+            deltaX = event.x - self._dragStartX
+            deltaY = event.y - self._dragStartY
+            newCoords = self.translate(deltaX, deltaY,self._dragStartCoords)
+            self.setCenter(newCoords)
+            self.update(newCoords)
                   
       def translate(self, deltaX, deltaY, coords):
-            
             newCoords = []
             count =0
             for coord in coords:
@@ -149,17 +146,23 @@ class TangramPiece:
       def bind(self, event, callback:str):
             self.canvas.tag_bind(self.id,event, callback)
       
+      
+      """
+      description of unbind method:
+      this method allows you to stop listening to a specific eventtype like <Motion> when called
+      is used to uncouple handlers dynamically when needed.
+      A TangramPiece is not always listening to for example Motion, only when it is being dragged
+      """
       def unbind(self, event):
             self.canvas.tag_unbind(self.id,event)
 
+      """
+            places the polygone at the start coordinates
+      """
       def reset(self):
             self.update(self.__resetCoords)
             
-      @property
-      def dragStarted(self):
-            return self._dragStartX is not None  and self._dragStartY is not None and self._dragStartCoords is not None 
-            
-      
+     
       @property 
       def id(self):
             return self.__id
