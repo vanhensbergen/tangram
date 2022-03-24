@@ -1,4 +1,3 @@
-from ast import Lambda
 from math import *
 from tkinter import Canvas
 class TangramPiece:
@@ -16,9 +15,9 @@ class TangramPiece:
             self.__resetCoords =coords
             self.__id = self.__canvas.create_polygon(coords, options);
             self.setCenter(coords)
-            self.bind("<Motion>", self.onDrag);
+            #de twee handlers worden gkoppeld; alle andere handlers worden in onDragStart gekoppeld
+            # en weer verwijderd in onDragEnd, dus motion and dragend handlers zijn er enkel bij noodzaak
             self.bind('<ButtonPress>', self.onDragStart )
-            self.bind('<ButtonRelease>', self.onDragEnd)
             self.bind('<Double-Button>', self.onDoubleClick)
         
       def onDoubleClick(self,event):
@@ -43,6 +42,8 @@ class TangramPiece:
             self._dragStartX = event.x
             self._dragStartY = event.y
             self._dragStartCoords = self.coords()
+            self.bind("<Motion>", self.onDrag)
+            self.bind('<ButtonRelease>', self.onDragEnd)
       
       
       """
@@ -53,6 +54,8 @@ class TangramPiece:
             self._dragStartX = None
             self._dragStartY = None
             self._dragStartCoords = None
+            self.unbind("<Motion")
+            self.unbind('<ButtonRelease')
             
 
       """
@@ -145,6 +148,9 @@ class TangramPiece:
       def bind(self, event, callback:str):
             self.canvas.tag_bind(self.id,event, callback)
       
+      def unbind(self, event):
+            self.canvas.tag_unbind(self.id,event)
+
       def reset(self):
             self.update(self.__resetCoords)
             
