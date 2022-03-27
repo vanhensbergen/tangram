@@ -1,5 +1,7 @@
 from app.views.TangramApp import TangramApp
-
-myApp = TangramApp("tangram")
-
-myApp.start()
+def main():
+    myApp = TangramApp("tangram")
+    myApp.start()
+    
+if __name__ == "__main__":
+    main()
